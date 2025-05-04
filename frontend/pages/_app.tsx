@@ -1,10 +1,13 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import React, { useState, useMemo } from "react";
 import "@rainbow-me/rainbowkit/styles.css";
 import { WagmiProvider, http } from "wagmi";
+import type { Chain } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { polygonMumbai } from "wagmi/chains";
+import { ChainSelector } from "../components/ChainSelector";
 
 // Define Base Goerli Testnet
 const baseGoerliChain = {
@@ -36,25 +39,37 @@ const lensTestnetChain = {
   testnet: true
 };
 
-// Create RainbowKit and Wagmi config
-const wagmiConfig = getDefaultConfig({
-  appName: "CreatorTip",
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
-  chains: [polygonMumbai, baseGoerliChain, lensTestnetChain],
-  transports: {
-    [polygonMumbai.id]: http(),
-    [baseGoerliChain.id]: http(),
-    [lensTestnetChain.id]: http()
-  },
-});
+// Available chains
+const availableChains: Chain[] = [polygonMumbai, baseGoerliChain, lensTestnetChain];
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
+  // State for selected chain
+  const [selectedChain, setSelectedChain] = useState<Chain>(availableChains[0]);
+  // Dynamic Wagmi config based on selected chain
+  const wagmiConfig = useMemo(
+    () =>
+      getDefaultConfig({
+        appName: "CreatorTip",
+        projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
+        chains: [selectedChain],
+        transports: { [selectedChain.id]: http() }
+      }),
+    [selectedChain]
+  );
+
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <Component {...pageProps} />
+          <div className="p-4">
+            <ChainSelector
+              chains={availableChains}
+              selectedChain={selectedChain}
+              onChainChange={setSelectedChain}
+            />
+            <Component {...pageProps} />
+          </div>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
