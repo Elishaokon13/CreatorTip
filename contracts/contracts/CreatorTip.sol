@@ -6,12 +6,10 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract CreatorTip is ERC721URIStorage, Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
     address public openActionAddress;
     mapping(address => bool) public supportedTokens; // Whitelist for USDC, POL, etc.
 
@@ -64,11 +62,11 @@ contract CreatorTip is ERC721URIStorage, Ownable, ReentrancyGuard {
     }
 
     function _mintSupporterNFT(address to, string calldata metadataURI) internal {
-        uint256 tokenId = _tokenIdCounter.current();
+        uint256 tokenId = _tokenIdCounter;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, metadataURI);
         emit SupporterNFTMinted(to, tokenId, metadataURI);
-        _tokenIdCounter.increment();
+        _tokenIdCounter += 1;
     }
 
     function addSupportedToken(address token) external onlyOwner {
@@ -89,6 +87,6 @@ contract CreatorTip is ERC721URIStorage, Ownable, ReentrancyGuard {
     }
 
     function getTokenIdCounter() external view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _tokenIdCounter;
     }
 }
