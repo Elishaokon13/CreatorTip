@@ -46,15 +46,12 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [ ] Implement chain selector UI
 - [ ] Refactor Wagmi config for dynamic chain selection
 - [ ] Deploy to Base Goerli testnet
+- [x] Add `tokenDecimals` mapping and `getTokenDecimals` view in `CreatorTip.sol` contract
+- [x] Clarify native token comment and add `NATIVE_TOKEN` constant in `CreatorTip.sol` contract
+- [x] Extend `Tipped` event to include `chainId` from `block.chainid`
+- [x] Optimize gas by batching token additions in constructor & add fallback logic for Lens Testnet `openActionAddress` in `CreatorTip.sol` contract
 
 # Executor's Feedback or Assistance Requests
-- Added multichain configurations for Base Goerli, Polygon Mumbai, and Lens Testnet; updated README and env placeholders.
-- **Next subtask:** Build a `ChainSelector` component in `frontend/components` and refactor `_app.tsx` to allow dynamic chain selection.
-- Starting subtask: Deploy CreatorTip contract to Base Goerli testnet.
-
-# Lessons
-- When adding new chains, ensure both frontend Wagmi config and Hardhat networks config are updated in tandem.
-- Always verify peer dependency requirements of SDKs against the framework's React version.
-- Avoid pre-creating placeholder files that conflict with scaffolding tools.
-- Verify npm package names before installing; the correct Lens Node SDK package is `@lens-protocol/client` rather than `@lens-protocol/node`.
-- Hardhat CLI interactive mode may not work in scripted environments; manual config creation can be more reliable. 
+- Compilation succeeded after updating compiler version to 0.8.27, fixing `ReentrancyGuard` import, and removing `Ownable(msg.sender)`.
+- **Next subtask:** Implement an interactive `ChainSelector` component in `frontend/components`.
+- Starting subtask: Building `ChainSelector` component... 
