@@ -5,6 +5,7 @@
   "scripts": {
     "deploy": "hardhat run scripts/deploy.ts --network polygonMumbai",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network lensTestnet",
+    "deploy:base": "hardhat run scripts/deploy.ts --network baseGoerli",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,7 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@openzeppelin/contracts": "^5.3.0",
+    "@openzeppelin/contracts": "^4.9.3",
     "dotenv": "^16.5.0",
     "ethers": "^5.8.0",
     "hardhat": "^2.23.0",

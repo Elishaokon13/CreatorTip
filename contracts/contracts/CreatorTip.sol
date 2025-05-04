@@ -1,23 +1,35 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.27;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-// CreatorTip: Allows tipping a creator in MATIC or an ERC20 token, and mints a Supporter NFT (ERC721) to the tipper.
-contract CreatorTip is ERC721URIStorage, Ownable {
-    uint256 private _tokenIdCounter;
+contract CreatorTip is ERC721URIStorage, Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIdCounter;
     address public openActionAddress;
+    mapping(address => bool) public supportedTokens; // Whitelist for USDC, POL, etc.
 
     event Tipped(address indexed creator, address indexed tipper, uint256 amount, address token);
     event SupporterNFTMinted(address indexed tipper, uint256 tokenId, string tokenURI);
+    event TokenAdded(address token);
+    event TokenRemoved(address token);
 
-    constructor(address _openActionAddress)
-        ERC721("CreatorTip Supporter", "CTS")
-        Ownable(msg.sender)
+    constructor(address _openActionAddress, address[] memory _initialTokens) 
+        ERC721("CreatorTip Supporter", "CTS") 
+        Ownable(msg.sender) 
     {
+        require(_openActionAddress != address(0), "CreatorTip: invalid Open Action address");
         openActionAddress = _openActionAddress;
+        for (uint256 i = 0; i < _initialTokens.length; i++) {
+            supportedTokens[_initialTokens[i]] = true;
+            emit TokenAdded(_initialTokens[i]);
+        }
     }
 
     modifier onlyOpenAction() {
@@ -25,47 +37,58 @@ contract CreatorTip is ERC721URIStorage, Ownable {
         _;
     }
 
-    /**
-     * @dev Tip a creator in MATIC (native) or ERC20 token, then mint a Supporter NFT to the tipper.
-     * @param creator Recipient address of tip.
-     * @param amount Amount of token to tip.
-     * @param token Address of ERC20 token, or address(0) for MATIC.
-     * @param metadataURI IPFS URI or metadata URI for the Supporter NFT.
-     */
     function tip(
         address creator,
         uint256 amount,
         address token,
         string calldata metadataURI
-    ) external payable onlyOpenAction {
+    ) external payable onlyOpenAction nonReentrant {
+        require(creator != address(0), "CreatorTip: invalid creator address");
+        require(amount > 0, "CreatorTip: tip amount must be greater than 0");
+        require(bytes(metadataURI).length > 0, "CreatorTip: invalid metadata URI");
+        require(supportedTokens[token] || token == address(0), "CreatorTip: unsupported token");
+
         address tipper = tx.origin;
 
         if (token == address(0)) {
-            require(msg.value == amount, "CreatorTip: incorrect MATIC amount");
-            payable(creator).transfer(amount);
+            // Native token (GRASS, POL, ETH depending on chain)
+            require(msg.value == amount, "CreatorTip: incorrect native token amount");
+            (bool sent, ) = creator.call{value: amount}("");
+            require(sent, "CreatorTip: native token transfer failed");
         } else {
-            // Transfer ERC20 from tipper to creator. Tip amount must be approved by tipper for this contract.
-            IERC20(token).transferFrom(tipper, creator, amount);
+            IERC20(token).safeTransferFrom(tipper, creator, amount);
         }
 
         emit Tipped(creator, tipper, amount, token);
         _mintSupporterNFT(tipper, metadataURI);
     }
 
-    /**
-     * @dev Internal: mints a new ERC721 token to the tipper with given metadata URI.
-     */
     function _mintSupporterNFT(address to, string calldata metadataURI) internal {
-        uint256 tokenId = _tokenIdCounter;
+        uint256 tokenId = _tokenIdCounter.current();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, metadataURI);
-
         emit SupporterNFTMinted(to, tokenId, metadataURI);
-        _tokenIdCounter++;
+        _tokenIdCounter.increment();
     }
 
-    /** @dev Allow owner to update Open Action address (backend) if needed. */
+    function addSupportedToken(address token) external onlyOwner {
+        require(token != address(0), "CreatorTip: invalid token address");
+        supportedTokens[token] = true;
+        emit TokenAdded(token);
+    }
+
+    function removeSupportedToken(address token) external onlyOwner {
+        require(supportedTokens[token], "CreatorTip: token not supported");
+        supportedTokens[token] = false;
+        emit TokenRemoved(token);
+    }
+
     function setOpenActionAddress(address newAddress) external onlyOwner {
+        require(newAddress != address(0), "CreatorTip: invalid Open Action address");
         openActionAddress = newAddress;
     }
-} 
+
+    function getTokenIdCounter() external view returns (uint256) {
+        return _tokenIdCounter.current();
+    }
+}

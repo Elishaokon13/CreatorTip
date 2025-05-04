@@ -21,6 +21,11 @@ const config: HardhatUserConfig = {
       url: process.env.POLYGON_RPC_URL || "",
       accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : []
     },
+    baseGoerli: {
+      url: process.env.BASE_RPC_URL || "https://goerli.base.org",
+      chainId: 84531,
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : []
+    },
     lensTestnet: {
       url: process.env.LENS_RPC_URL || "https://rpc.testnet.lens.xyz",
       chainId: 37111,

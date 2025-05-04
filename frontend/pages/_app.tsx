@@ -4,6 +4,22 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { WagmiProvider, http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { polygonMumbai } from "wagmi/chains";
+
+// Define Base Goerli Testnet
+const baseGoerliChain = {
+  id: 84531,
+  name: "Base Goerli",
+  nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: [process.env.NEXT_PUBLIC_BASE_RPC_URL || "https://goerli.base.org"] },
+    public: { http: [process.env.NEXT_PUBLIC_BASE_RPC_URL || "https://goerli.base.org"] }
+  },
+  blockExplorers: {
+    default: { name: "Base Goerli Explorer", url: "https://goerli.basescan.org" }
+  },
+  testnet: true
+};
 
 // Define Lens Chain Testnet
 const lensTestnetChain = {
@@ -24,9 +40,11 @@ const lensTestnetChain = {
 const wagmiConfig = getDefaultConfig({
   appName: "CreatorTip",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
-  chains: [lensTestnetChain],
+  chains: [polygonMumbai, baseGoerliChain, lensTestnetChain],
   transports: {
-    [lensTestnetChain.id]: http(),
+    [polygonMumbai.id]: http(),
+    [baseGoerliChain.id]: http(),
+    [lensTestnetChain.id]: http()
   },
 });
 

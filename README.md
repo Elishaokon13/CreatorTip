@@ -1,6 +1,6 @@
 # CreatorTip
 
-A Web3 tipping micro-app built on Lens Protocol and deployed to Lens Chain Testnet.
+A Web3 tipping micro-app built on Lens Protocol supporting multiple chains: Polygon Mumbai, Base Goerli, and Lens Chain Testnet.
 
 ## Project Structure
 
@@ -17,14 +17,25 @@ A Web3 tipping micro-app built on Lens Protocol and deployed to Lens Chain Testn
 └── README.md            # Project overview and setup
 ```
 
-## Lens Chain Testnet Details
+## Supported Networks
 
-- Network Name: Lens Chain Testnet
+- **Polygon Mumbai (Testnet)**
+- Chain ID: 80001
+- RPC URL: https://polygon-mumbai.g.alchemy.com/v2/
+- Currency: MATIC
+- Explorer: https://mumbai.polygonscan.com
+
+- **Base Goerli (Testnet)**
+- Chain ID: 84531
+- RPC URL: https://goerli.base.org
+- Currency: ETH / USDC
+- Explorer: https://goerli.basescan.org
+
+- **Lens Chain Testnet**
 - Chain ID: 37111
 - RPC URL: https://rpc.testnet.lens.xyz
-- WebSocket URL: wss://rpc.testnet.lens.xyz/ws
-- Currency Symbol: GRASS
-- Block Explorer: https://explorer.testnet.lens.xyz
+- Currency: GRASS
+- Explorer: https://explorer.testnet.lens.xyz
 
 ## Prerequisites
 
@@ -42,8 +53,9 @@ A Web3 tipping micro-app built on Lens Protocol and deployed to Lens Chain Testn
    cp .env.example .env.local
    ```
    Fill in required values in `.env.local`:
-   - LENS_RPC_URL (e.g. https://rpc.testnet.lens.xyz)
-   - POLYGON_RPC_URL (if also using Polygon)
+   - LENS_RPC_URL (Lens Chain Testnet RPC URL)
+   - BASE_RPC_URL (Base Goerli RPC URL)
+   - NEXT_PUBLIC_BASE_RPC_URL (same as BASE_RPC_URL)
    - WALLET_PRIVATE_KEY
    - OPEN_ACTION_ADDRESS (to be added after deploy)
    - CREATOR_TIP_CONTRACT_ADDRESS (to be added after deploy)
@@ -81,10 +93,18 @@ A Web3 tipping micro-app built on Lens Protocol and deployed to Lens Chain Testn
 
 ## Scripts
 
-- `npm run deploy`          Deploy to Polygon Mumbai
-- `npm run deploy:testnet`  Deploy to Lens Chain Testnet (37111)
-- `npm run start`           Start Express API server
-- `npm run dev`             Start Next.js frontend in development
+```bash
+# Deploy contracts
+npm run deploy:polygon   # Deploy to Polygon Mumbai
+npm run deploy:base      # Deploy to Base Goerli
+npm run deploy:testnet   # Deploy to Lens Chain Testnet
+
+# Start backend server
+npm run start
+
+# Start frontend
+npm run dev
+```
 
 ## Next Steps & TODOs
 

@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.3.0) (utils/structs/EnumerableSet.sol)
+// OpenZeppelin Contracts (last updated v4.9.0) (utils/structs/EnumerableSet.sol)
 // This file was procedurally generated from scripts/generate/templates/EnumerableSet.js.
 
-pragma solidity ^0.8.20;
-
-import {Arrays} from "../Arrays.sol";
+pragma solidity ^0.8.0;
 
 /**
  * @dev Library for managing
@@ -16,7 +14,6 @@ import {Arrays} from "../Arrays.sol";
  * - Elements are added, removed, and checked for existence in constant time
  * (O(1)).
  * - Elements are enumerated in O(n). No guarantees are made on the ordering.
- * - Set can be cleared (all elements removed) in O(n).
  *
  * ```solidity
  * contract Example {
@@ -54,9 +51,9 @@ library EnumerableSet {
     struct Set {
         // Storage of set values
         bytes32[] _values;
-        // Position is the index of the value in the `values` array plus 1.
-        // Position 0 is used to mean a value is not in the set.
-        mapping(bytes32 value => uint256) _positions;
+        // Position of the value in the `values` array, plus 1 because index 0
+        // means a value is not in the set.
+        mapping(bytes32 => uint256) _indexes;
     }
 
     /**
@@ -70,7 +67,7 @@ library EnumerableSet {
             set._values.push(value);
             // The value is stored at length-1, but we add 1 to all indexes
             // and use 0 as a sentinel value
-            set._positions[value] = set._values.length;
+            set._indexes[value] = set._values.length;
             return true;
         } else {
             return false;
@@ -84,32 +81,32 @@ library EnumerableSet {
      * present.
      */
     function _remove(Set storage set, bytes32 value) private returns (bool) {
-        // We cache the value's position to prevent multiple reads from the same storage slot
-        uint256 position = set._positions[value];
+        // We read and store the value's index to prevent multiple reads from the same storage slot
+        uint256 valueIndex = set._indexes[value];
 
-        if (position != 0) {
+        if (valueIndex != 0) {
             // Equivalent to contains(set, value)
             // To delete an element from the _values array in O(1), we swap the element to delete with the last one in
             // the array, and then remove the last element (sometimes called as 'swap and pop').
             // This modifies the order of the array, as noted in {at}.
 
-            uint256 valueIndex = position - 1;
+            uint256 toDeleteIndex = valueIndex - 1;
             uint256 lastIndex = set._values.length - 1;
 
-            if (valueIndex != lastIndex) {
+            if (lastIndex != toDeleteIndex) {
                 bytes32 lastValue = set._values[lastIndex];
 
-                // Move the lastValue to the index where the value to delete is
-                set._values[valueIndex] = lastValue;
-                // Update the tracked position of the lastValue (that was just moved)
-                set._positions[lastValue] = position;
+                // Move the last value to the index where the value to delete is
+                set._values[toDeleteIndex] = lastValue;
+                // Update the index for the moved value
+                set._indexes[lastValue] = valueIndex; // Replace lastValue's index to valueIndex
             }
 
             // Delete the slot where the moved value was stored
             set._values.pop();
 
-            // Delete the tracked position for the deleted slot
-            delete set._positions[value];
+            // Delete the index for the deleted slot
+            delete set._indexes[value];
 
             return true;
         } else {
@@ -118,24 +115,10 @@ library EnumerableSet {
     }
 
     /**
-     * @dev Removes all the values from a set. O(n).
-     *
-     * WARNING: Developers should keep in mind that this function has an unbounded cost and using it may render the
-     * function uncallable if the set grows to the point where clearing it consumes too much gas to fit in a block.
-     */
-    function _clear(Set storage set) private {
-        uint256 len = _length(set);
-        for (uint256 i = 0; i < len; ++i) {
-            delete set._positions[set._values[i]];
-        }
-        Arrays.unsafeSetLength(set._values, 0);
-    }
-
-    /**
      * @dev Returns true if the value is in the set. O(1).
      */
     function _contains(Set storage set, bytes32 value) private view returns (bool) {
-        return set._positions[value] != 0;
+        return set._indexes[value] != 0;
     }
 
     /**
@@ -198,16 +181,6 @@ library EnumerableSet {
     }
 
     /**
-     * @dev Removes all the values from a set. O(n).
-     *
-     * WARNING: Developers should keep in mind that this function has an unbounded cost and using it may render the
-     * function uncallable if the set grows to the point where clearing it consumes too much gas to fit in a block.
-     */
-    function clear(Bytes32Set storage set) internal {
-        _clear(set._inner);
-    }
-
-    /**
      * @dev Returns true if the value is in the set. O(1).
      */
     function contains(Bytes32Set storage set, bytes32 value) internal view returns (bool) {
@@ -247,7 +220,8 @@ library EnumerableSet {
         bytes32[] memory store = _values(set._inner);
         bytes32[] memory result;
 
-        assembly ("memory-safe") {
+        /// @solidity memory-safe-assembly
+        assembly {
             result := store
         }
 
@@ -278,16 +252,6 @@ library EnumerableSet {
      */
     function remove(AddressSet storage set, address value) internal returns (bool) {
         return _remove(set._inner, bytes32(uint256(uint160(value))));
-    }
-
-    /**
-     * @dev Removes all the values from a set. O(n).
-     *
-     * WARNING: Developers should keep in mind that this function has an unbounded cost and using it may render the
-     * function uncallable if the set grows to the point where clearing it consumes too much gas to fit in a block.
-     */
-    function clear(AddressSet storage set) internal {
-        _clear(set._inner);
     }
 
     /**
@@ -330,7 +294,8 @@ library EnumerableSet {
         bytes32[] memory store = _values(set._inner);
         address[] memory result;
 
-        assembly ("memory-safe") {
+        /// @solidity memory-safe-assembly
+        assembly {
             result := store
         }
 
@@ -361,16 +326,6 @@ library EnumerableSet {
      */
     function remove(UintSet storage set, uint256 value) internal returns (bool) {
         return _remove(set._inner, bytes32(value));
-    }
-
-    /**
-     * @dev Removes all the values from a set. O(n).
-     *
-     * WARNING: Developers should keep in mind that this function has an unbounded cost and using it may render the
-     * function uncallable if the set grows to the point where clearing it consumes too much gas to fit in a block.
-     */
-    function clear(UintSet storage set) internal {
-        _clear(set._inner);
     }
 
     /**
@@ -413,7 +368,8 @@ library EnumerableSet {
         bytes32[] memory store = _values(set._inner);
         uint256[] memory result;
 
-        assembly ("memory-safe") {
+        /// @solidity memory-safe-assembly
+        assembly {
             result := store
         }
 
