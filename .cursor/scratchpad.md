@@ -25,7 +25,7 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 12. Create `README.md` with setup instructions and sample workflow
 
 # Project Status Board
-- [ ] Initialize monorepo structure
+- [x] Initialize monorepo structure
 - [ ] Scaffold frontend with TS, Tailwind, Shadcn/UI, wagmi & RainbowKit
 - [ ] Implement landing page (connect + Lens auth)
 - [ ] Implement tip page scaffold
@@ -41,5 +41,10 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [ ] Create `README.md`
 
 # Executor's Feedback or Assistance Requests
+- Monorepo directories created: `frontend/`, `server/`, `contracts/`.
+- Starting subtask: Scaffold frontend with TS, Tailwind, Shadcn/UI, wagmi & RainbowKit
+- Next subtask: Configure Hardhat and contracts folder
 
-# Lessons 
+# Lessons
+- Avoid pre-creating placeholder files that conflict with scaffolding tools.
+- Verify npm package names before installing; the correct Lens Node SDK package is `@lens-protocol/client` rather than `@lens-protocol/node`. 
