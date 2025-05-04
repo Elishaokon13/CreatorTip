@@ -37,7 +37,8 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [x] Create `CreatorTip.sol` contract
 - [x] Write deploy script
 - [x] Setup env variables
-- [ ] Create `README.md`
+- [x] Integrate Lens Node SDK in server
+- [ ] Setup Hardhat deployment verification
 
 # Executor's Feedback or Assistance Requests
 - `frontend/pages/index.tsx` updated with wallet connect and Sign in with Lens using RainbowKit and Lens SDK.
@@ -48,7 +49,9 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - Stub routes added in `server/routes/open-action.js` and `server/routes/tips.js`.
 - Open Action route in `server/routes/open-action.js` now calls `lensClient.openActions.tip` and returns real `txHash`.
 - Tips analytics route in `server/routes/tips.js` returns placeholder analytics object.
-- **Next subtask:** Integrate analytics route with on-chain data (reading contract events or using Momoka) to return real tip data.
+- Analytics route now reads on-chain events from the `CreatorTip` contract on Polygon Mumbai, computing total tips, top tippers, and supporters.
+- Ensure `CREATOR_TIP_CONTRACT_ADDRESS` and `POLYGON_RPC_URL` are set in `.env.local`.
+- **Next subtask:** Verify Hardhat deployment script and test end-to-end flow locally.
 
 # Lessons
 - Always verify peer dependency requirements of SDKs against the framework's React version.
