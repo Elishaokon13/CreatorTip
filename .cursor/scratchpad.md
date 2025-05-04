@@ -34,17 +34,15 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [ ] Add Open Action API endpoint
 - [ ] Add tips analytics API endpoint
 - [ ] Integrate Lens Node SDK in server
-- [ ] Configure Hardhat and contracts folder
-- [ ] Create `CreatorTip.sol` contract
-- [ ] Write deploy script
+- [x] Configure Hardhat and contracts folder
+- [x] Create `CreatorTip.sol` contract
+- [x] Write deploy script
 - [ ] Setup env variables
 - [ ] Create `README.md`
 
 # Executor's Feedback or Assistance Requests
-- Monorepo directories created: `frontend/`, `server/`, `contracts/`.
-- Frontend dependencies installed successfully using `--legacy-peer-deps` (Shadcn/UI, wagmi, ethers, RainbowKit, Lens React SDK).
-- Starting subtask: Configure Hardhat in `contracts/` folder.
-- Hardhat interactive project init failed (Error HH1); proceeding to manually create config and scripts.
+- Hardhat deploy script created at `contracts/scripts/deploy.ts` and `scripts` entry added to `package.json`.
+- **Next subtask:** Setup environment variable templates (`.env.example`, `.env.local`).
 
 # Lessons
 - Always verify peer dependency requirements of SDKs against the framework's React version.

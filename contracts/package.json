@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "deploy": "hardhat run scripts/deploy.ts --network polygonMumbai",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
