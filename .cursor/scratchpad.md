@@ -37,12 +37,12 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [x] Configure Hardhat and contracts folder
 - [x] Create `CreatorTip.sol` contract
 - [x] Write deploy script
-- [ ] Setup env variables
+- [x] Setup env variables
 - [ ] Create `README.md`
 
 # Executor's Feedback or Assistance Requests
-- Hardhat deploy script created at `contracts/scripts/deploy.ts` and `scripts` entry added to `package.json`.
-- **Next subtask:** Setup environment variable templates (`.env.example`, `.env.local`).
+- Created root `.env.example` with placeholders and `.env.local` file for local use. `Setup env variables` task complete.
+- Starting subtask: Implement landing page (connect + Lens auth) in `frontend/pages/index.tsx`.
 
 # Lessons
 - Always verify peer dependency requirements of SDKs against the framework's React version.
