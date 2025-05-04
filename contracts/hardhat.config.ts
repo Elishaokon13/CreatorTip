@@ -23,7 +23,7 @@ const config: HardhatUserConfig = {
     },
     baseGoerli: {
       url: process.env.BASE_RPC_URL || "https://goerli.base.org",
-      chainId: 84531,
+      chainId: 84532,
       accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : []
     },
     lensTestnet: {

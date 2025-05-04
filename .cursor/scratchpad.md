@@ -43,15 +43,22 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [x] Setup env variables
 - [x] Create `README.md`
 - [x] Add multichain support configs (Polygon, Base, Lens)
-- [ ] Implement chain selector UI
-- [ ] Refactor Wagmi config for dynamic chain selection
-- [ ] Deploy to Base Goerli testnet
+- [x] Implement chain selector UI
+- [x] Refactor Wagmi config for dynamic chain selection
+- [x] Deploy to Base Goerli testnet
 - [x] Add `tokenDecimals` mapping and `getTokenDecimals` view in `CreatorTip.sol` contract
 - [x] Clarify native token comment and add `NATIVE_TOKEN` constant in `CreatorTip.sol` contract
 - [x] Extend `Tipped` event to include `chainId` from `block.chainid`
 - [x] Optimize gas by batching token additions in constructor & add fallback logic for Lens Testnet `openActionAddress` in `CreatorTip.sol` contract
+- [x] Review `scripts/deploy.ts` script for correctness
 
 # Executor's Feedback or Assistance Requests
-- Compilation succeeded after updating compiler version to 0.8.27, fixing `ReentrancyGuard` import, and removing `Ownable(msg.sender)`.
-- **Next subtask:** Implement an interactive `ChainSelector` component in `frontend/components`.
-- Starting subtask: Building `ChainSelector` component... 
+- Attempted to deploy to Base Goerli testnet via `npm run deploy:base`, but received HardhatError HH110: Invalid JSON-RPC response (error code: 1016).
+  - This indicates the RPC endpoint may be incorrect/unreachable or the account lacks funds.
+  - Please verify that `BASE_RPC_URL` in `.env.local` is correctly set to a working Base Goerli RPC (e.g., `https://goerli.base.org` or another provider) and that the deployer account has test ETH on Base Goerli.
+- **Next subtask:** Retry deployment after confirming RPC URL and funding.
+- Completed subtask: Retried deployment and successfully deployed `CreatorTip` to Base Goerli at 0xf94cD9418B837aE77e4BFCAA0439D0C777f15c24.
+- **Next subtask:** Update `CREATOR_TIP_CONTRACT_ADDRESS` in `.env.local` with the deployed address and integrate it into the frontend/backend.
+- Completed subtask: Reviewed `scripts/deploy.ts`. It correctly loads environment variables from `.env.local`, parses `INITIAL_SUPPORTED_TOKENS`, and passes both `openActionAddress` and `initialTokens` to the constructor.
+  - Suggestion: Consider adding validation for non-empty `openActionAddress` and logging the network chain ID prior to deployment.
+- **Next subtask:** Integrate the `CREATOR_TIP_CONTRACT_ADDRESS` into the backend analytics route and frontend configuration. 

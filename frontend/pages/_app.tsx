@@ -11,7 +11,7 @@ import { ChainSelector } from "../components/ChainSelector";
 
 // Define Base Goerli Testnet
 const baseGoerliChain = {
-  id: 84531,
+  id: 84532,
   name: "Base Goerli",
   nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
   rpcUrls: {
