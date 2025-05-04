@@ -7,7 +7,7 @@ const router = express.Router();
 // Load contract ABI and setup provider
 const contractArtifact = require('../../contracts/artifacts/contracts/CreatorTip.sol/CreatorTip.json');
 const contractABI = contractArtifact.abi;
-const rpcUrl = process.env.POLYGON_RPC_URL;
+const rpcUrl = process.env.LENS_RPC_URL;
 const contractAddress = process.env.CREATOR_TIP_CONTRACT_ADDRESS;
 if (!rpcUrl || !contractAddress) {
   throw new Error('Missing POLYGON_RPC_URL or CREATOR_TIP_CONTRACT_ADDRESS in environment');

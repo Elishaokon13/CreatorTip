@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -13,7 +13,10 @@ contract CreatorTip is ERC721URIStorage, Ownable {
     event Tipped(address indexed creator, address indexed tipper, uint256 amount, address token);
     event SupporterNFTMinted(address indexed tipper, uint256 tokenId, string tokenURI);
 
-    constructor(address _openActionAddress) ERC721("CreatorTip Supporter", "CTS") {
+    constructor(address _openActionAddress)
+        ERC721("CreatorTip Supporter", "CTS")
+        Ownable(msg.sender)
+    {
         openActionAddress = _openActionAddress;
     }
 

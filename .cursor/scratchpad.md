@@ -52,6 +52,14 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - Analytics route now reads on-chain events from the `CreatorTip` contract on Polygon Mumbai, computing total tips, top tippers, and supporters.
 - Ensure `CREATOR_TIP_CONTRACT_ADDRESS` and `POLYGON_RPC_URL` are set in `.env.local`.
 - **Next subtask:** Verify Hardhat deployment script and test end-to-end flow locally.
+- To verify and run the Hardhat deployment, please ensure `.env.local` has valid `POLYGON_RPC_URL` and `WALLET_PRIVATE_KEY` values set.
+- **Request:** Confirm that environment variables are configured so I can run `npm run deploy` in `contracts/` to test deployment.
+- Added `lensTestnetChain` config in `frontend/pages/_app.tsx` for Lens Chain Testnet (ID 37111).
+- Updated `.env.example` and tips route to use `LENS_RPC_URL` for Lens Testnet.
+- **Note:** Update `LENS_RPC_URL` in `.env.local` to `https://rpc.testnet.lens.xyz` before redeploying and testing.
+- Attempted deployment to `lensTestnet`, but encountered `insufficient funds` error for gas.
+- Wallet balance is 0; please fund the deployment key with testnet GRASS from the Lens Chain Testnet faucet.
+- **Request:** Let me know once the wallet is funded so I can redeploy and complete end-to-end tests.
 
 # Lessons
 - Always verify peer dependency requirements of SDKs against the framework's React version.

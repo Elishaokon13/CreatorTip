@@ -1,12 +1,14 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomiclabs/hardhat-ethers";
 import * as dotenv from "dotenv";
+import * as path from "path";
 
-dotenv.config();
+// Load environment variables from root .env.local
+dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.17",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -17,6 +19,11 @@ const config: HardhatUserConfig = {
   networks: {
     polygonMumbai: {
       url: process.env.POLYGON_RPC_URL || "",
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : []
+    },
+    lensTestnet: {
+      url: process.env.LENS_RPC_URL || "https://rpc.testnet.lens.xyz",
+      chainId: 37111,
       accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : []
     }
   }

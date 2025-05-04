@@ -3,16 +3,30 @@ import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { WagmiProvider, http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { polygonMumbai } from "wagmi/chains";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+
+// Define Lens Chain Testnet
+const lensTestnetChain = {
+  id: 37111,
+  name: "Lens Chain Testnet",
+  nativeCurrency: { name: "GRASS", symbol: "GRASS", decimals: 18 },
+  rpcUrls: {
+    default: { http: [process.env.NEXT_PUBLIC_LENS_RPC_URL || "https://rpc.testnet.lens.xyz"] },
+    public: { http: [process.env.NEXT_PUBLIC_LENS_RPC_URL || "https://rpc.testnet.lens.xyz"] }
+  },
+  blockExplorers: {
+    default: { name: "Lens Testnet Explorer", url: "https://explorer.testnet.lens.xyz" }
+  },
+  testnet: true
+};
 
 // Create RainbowKit and Wagmi config
 const wagmiConfig = getDefaultConfig({
   appName: "CreatorTip",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
-  chains: [polygonMumbai],
+  chains: [lensTestnetChain],
   transports: {
-    [polygonMumbai.id]: http(),
+    [lensTestnetChain.id]: http(),
   },
 });
 

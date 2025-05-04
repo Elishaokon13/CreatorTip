@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "deploy": "hardhat run scripts/deploy.ts --network polygonMumbai",
+    "deploy:testnet": "hardhat run scripts/deploy.ts --network lensTestnet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
