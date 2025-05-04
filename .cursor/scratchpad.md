@@ -27,8 +27,8 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 # Project Status Board
 - [x] Initialize monorepo structure
 - [x] Scaffold frontend with TS, Tailwind, Shadcn/UI, wagmi & RainbowKit
-- [ ] Implement landing page (connect + Lens auth)
-- [ ] Implement tip page scaffold
+- [x] Implement landing page (connect + Lens auth)
+- [x] Implement tip page scaffold
 - [ ] Implement dashboard page scaffold
 - [ ] Scaffold Express server
 - [ ] Add Open Action API endpoint
@@ -41,8 +41,10 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [ ] Create `README.md`
 
 # Executor's Feedback or Assistance Requests
-- Created root `.env.example` with placeholders and `.env.local` file for local use. `Setup env variables` task complete.
-- Starting subtask: Implement landing page (connect + Lens auth) in `frontend/pages/index.tsx`.
+- `frontend/pages/index.tsx` updated with wallet connect and Sign in with Lens using RainbowKit and Lens SDK.
+- `frontend/pages/tip/[postId].tsx` scaffolded for tipping UI with amount, token selector, and Open Action API call.
+- Updated error handling in `frontend/pages/tip/[postId].tsx` to use `unknown` and type-safe checks instead of `any`.
+- Next subtask: Implement dashboard page scaffold at `frontend/pages/dashboard.tsx`.
 
 # Lessons
 - Always verify peer dependency requirements of SDKs against the framework's React version.
