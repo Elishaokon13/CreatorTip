@@ -26,7 +26,7 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 
 # Project Status Board
 - [x] Initialize monorepo structure
-- [ ] Scaffold frontend with TS, Tailwind, Shadcn/UI, wagmi & RainbowKit
+- [x] Scaffold frontend with TS, Tailwind, Shadcn/UI, wagmi & RainbowKit
 - [ ] Implement landing page (connect + Lens auth)
 - [ ] Implement tip page scaffold
 - [ ] Implement dashboard page scaffold
@@ -42,9 +42,12 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 
 # Executor's Feedback or Assistance Requests
 - Monorepo directories created: `frontend/`, `server/`, `contracts/`.
-- Starting subtask: Scaffold frontend with TS, Tailwind, Shadcn/UI, wagmi & RainbowKit
-- Next subtask: Configure Hardhat and contracts folder
+- Frontend dependencies installed successfully using `--legacy-peer-deps` (Shadcn/UI, wagmi, ethers, RainbowKit, Lens React SDK).
+- Starting subtask: Configure Hardhat in `contracts/` folder.
+- Hardhat interactive project init failed (Error HH1); proceeding to manually create config and scripts.
 
 # Lessons
+- Always verify peer dependency requirements of SDKs against the framework's React version.
 - Avoid pre-creating placeholder files that conflict with scaffolding tools.
-- Verify npm package names before installing; the correct Lens Node SDK package is `@lens-protocol/client` rather than `@lens-protocol/node`. 
+- Verify npm package names before installing; the correct Lens Node SDK package is `@lens-protocol/client` rather than `@lens-protocol/node`.
+- Hardhat CLI interactive mode may not work in scripted environments; manual config creation can be more reliable. 
