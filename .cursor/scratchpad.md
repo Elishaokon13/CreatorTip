@@ -31,8 +31,8 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - [x] Implement tip page scaffold
 - [x] Implement dashboard page scaffold
 - [x] Scaffold Express server
-- [ ] Add Open Action API endpoint
-- [ ] Add tips analytics API endpoint
+- [x] Add Open Action API endpoint
+- [x] Add tips analytics API endpoint
 - [x] Configure Hardhat and contracts folder
 - [x] Create `CreatorTip.sol` contract
 - [x] Write deploy script
@@ -46,7 +46,9 @@ We need to scaffold **CreatorTip**, a Web3 tipping micro-app on Lens Protocol ta
 - `frontend/pages/dashboard.tsx` scaffolded to fetch and display total tips, top tippers, and supporters.
 - Express server initialized in `server/index.js` with CORS, JSON parsing, and route mounting.
 - Stub routes added in `server/routes/open-action.js` and `server/routes/tips.js`.
-- Next subtask: Integrate Open Action API endpoint logic with `@lens-protocol/client` SDK.
+- Open Action route in `server/routes/open-action.js` now calls `lensClient.openActions.tip` and returns real `txHash`.
+- Tips analytics route in `server/routes/tips.js` returns placeholder analytics object.
+- **Next subtask:** Integrate analytics route with on-chain data (reading contract events or using Momoka) to return real tip data.
 
 # Lessons
 - Always verify peer dependency requirements of SDKs against the framework's React version.

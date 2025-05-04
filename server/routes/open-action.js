@@ -8,12 +8,18 @@ const lensClient = new LensClient({
 });
 
 router.post('/', async (req, res) => {
-  const { postId, amount, token } = req.body;
+  const { postId: publicationId, amount: tipAmount, token: tipToken } = req.body;
   try {
-    // TODO: Integrate Lens Open Action logic
-    // e.g., const result = await lensClient.openActions.tip({ postId, amount, token });
-    const txHash = '0xPLACEHOLDER_TX_HASH';
-    res.json({ txHash });
+    // Integrate Lens Open Action logic
+    // For example, use tip action from LensClient
+    const result = await lensClient.openActions.tip({
+      postId: publicationId,
+      amount: tipAmount,
+      token: tipToken,
+    });
+    // result.txHash contains the transaction hash
+    const txHash = result.txHash;
+    return res.json({ txHash });
   } catch (error) {
     console.error('Open Action error:', error);
     res.status(500).json({ error: 'Open Action failed' });
